@@ -2,7 +2,6 @@ package no.hig.MartinNGlen.GUIRenderer;
 
 import java.util.*;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.*;
@@ -25,10 +24,6 @@ public class ComponentModel extends AbstractTableModel{
 		ComponentDecorator newComponent = new JLabelComponent(new BaseComponent(uniqueName));
 		componentData.add (newComponent);
 		fireTableRowsInserted(componentData.size(), componentData.size());
-	}
-	
-	public void removeComponentEntry(int row) {
-		fireTableRowsDeleted(row, row);
 	}
 	
 	public void setTableFrame (JFrame f) {
@@ -57,8 +52,8 @@ public class ComponentModel extends AbstractTableModel{
 			case 4 : return (new Integer(0)).getClass();
 			case 5 : return (new Integer(0)).getClass();
 			case 6 : return (new Integer(0)).getClass();
-			case 7 : return (new ImageIcon()).getClass();
-			case 8 : return (new ImageIcon()).getClass();
+			case 7 : return ("").getClass();
+			case 8 : return ("").getClass();
 		}
 		return ("").getClass();
 	}
@@ -73,8 +68,8 @@ public class ComponentModel extends AbstractTableModel{
 				case 4 : return ((BaseComponent)component.getBaseComponent()).getColumn();
 				case 5 : return ((BaseComponent)component.getBaseComponent()).getNumOfRows();
 				case 6 : return ((BaseComponent)component.getBaseComponent()).getNumOfColumns();
-				case 7 : return new ImageIcon(getClass().getResource("/images/table/" +((BaseComponent)component.getBaseComponent()).getFill() + "Icon.png"));
-				case 8 : return new ImageIcon(getClass().getResource("/images/table/" +((BaseComponent)component.getBaseComponent()).getAnchor() + "Icon.png"));
+				case 7 : return ((BaseComponent)component.getBaseComponent()).getFill();
+				case 8 : return ((BaseComponent)component.getBaseComponent()).getAnchor();
 			}
 		} else {
 			if (component instanceof JLabelComponent)
@@ -102,27 +97,11 @@ public class ComponentModel extends AbstractTableModel{
 			}
 		}
 		else if (columnIndex==7){
-			switch((Integer)aValue){
-				case 0 : ((BaseComponent)component.getBaseComponent()).setFill("NONE"); break;
-				case 1 : ((BaseComponent)component.getBaseComponent()).setFill("HORIZONTAL"); break;
-				case 2 : ((BaseComponent)component.getBaseComponent()).setFill("VERTICAL"); break;
-				case 3 : ((BaseComponent)component.getBaseComponent()).setFill("BOTH"); break;
-			}
-				
+			((BaseComponent)component.getBaseComponent()).setFill((String)aValue);
 			
 		}
 		else if (columnIndex==8){
-			switch((Integer)aValue){
-				case 0 : ((BaseComponent)component.getBaseComponent()).setAnchor("CENTER"); break;
-				case 1 : ((BaseComponent)component.getBaseComponent()).setAnchor("NORTH"); break;
-				case 2 : ((BaseComponent)component.getBaseComponent()).setAnchor("NORTHEAST"); break;
-				case 3 : ((BaseComponent)component.getBaseComponent()).setAnchor("EAST"); break;
-				case 4 : ((BaseComponent)component.getBaseComponent()).setAnchor("SOUTHEAST"); break;
-				case 5 : ((BaseComponent)component.getBaseComponent()).setAnchor("SOUTH"); break;
-				case 6 : ((BaseComponent)component.getBaseComponent()).setAnchor("SOUTHWEST"); break;
-				case 7 : ((BaseComponent)component.getBaseComponent()).setAnchor("WEST"); break;
-				case 9 : ((BaseComponent)component.getBaseComponent()).setAnchor("NORTHWEST"); break;
-			}
+			((BaseComponent)component.getBaseComponent()).setAnchor((String)aValue);
 		}
 		else if (columnIndex==0) {
 			ComponentDecorator newComponent = null;

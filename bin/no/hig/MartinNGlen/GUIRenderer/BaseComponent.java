@@ -18,7 +18,7 @@ public class BaseComponent implements Component{
 		numOfRows = 1;
 		numOfColumns = 1;
 		fill = "NONE";
-		anchor = "CENTER";
+		anchor = "NORTH";
 		
 	}
 	
