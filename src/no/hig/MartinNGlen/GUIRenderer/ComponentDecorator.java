@@ -1,6 +1,8 @@
 package no.hig.MartinNGlen.GUIRenderer;
 
-abstract class ComponentDecorator implements Component{
+import java.io.Serializable;
+
+abstract class ComponentDecorator implements Serializable {
 
 	private BaseComponent baseComponent;
 	

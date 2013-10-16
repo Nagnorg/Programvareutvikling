@@ -1,5 +1,9 @@
 package no.hig.MartinNGlen.GUIRenderer;
 
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -142,5 +146,34 @@ public class ComponentModel extends AbstractTableModel{
 	public boolean isCellEditable(int rowIndex, int columnIndex){
 		return true;
 		
+	}
+	
+	public void save (ObjectOutputStream oos) {
+		try {
+			for (int i = 0; i < componentData.size(); i++)
+				oos.writeObject(componentData.get(i));
+		} catch (IOException ioe) {
+			System.err.println ("Feil under skriving til fil");
+		}
+	}
+	
+	public void load (ObjectInputStream ois) {
+		componentData.clear();
+		try {
+			while (true) {
+				ComponentDecorator animal = (ComponentDecorator)ois.readObject();
+				componentData.add(animal);
+			}
+		} catch (EOFException eofe) {
+			// Slutt på fila
+		} catch (ClassCastException cce) {
+			System.err.println ("OPPPSSSSS, dette var ingen dyrehage");
+		} catch (ClassNotFoundException cnfe) {
+			System.err.println ("Oi, vi har mista ur-dyret.");
+		} catch (IOException ioe) {
+			System.err.println ("Feil under lesing fra fil");
+		} finally {
+			fireTableDataChanged();
+		}
 	}
 }

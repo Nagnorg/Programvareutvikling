@@ -1,6 +1,8 @@
 package no.hig.MartinNGlen.GUIRenderer;
 
-public class BaseComponent implements Component{
+import java.io.Serializable;
+
+public class BaseComponent implements Serializable {
 	private String name;
 	private String content;
 	private int row;

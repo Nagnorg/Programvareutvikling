@@ -1,9 +1,14 @@
 package no.hig.MartinNGlen.GUIRenderer;
 
 import java.awt.*;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -51,13 +56,23 @@ public class GUIRendWorkspace extends JFrame {
 		workspaceTable.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(componentAnchorEditor));
 		workspaceModel.addNewComponentEntry();
 		
-		//toolbarcreation
+		//toolbar creation
 		JButton newlineButton = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/newlineIcon.png")));
 		newlineButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarNewline"));
-		//JButton saveButton = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/saveIcon.png")));
-		//JButton loadButton  = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/loadIcon.png")));
+		
+		JButton saveButton = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/saveIcon.png")));
+		saveButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarSave"));
+		
+		JButton loadButton  = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/loadIcon.png")));
+		loadButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarLoad"));
+		
 		newlineButton.addActionListener(new newComponent());
+		saveButton.addActionListener(new saveState());
+		loadButton.addActionListener(new loadState());
+		
 		workspaceToolbar.add(newlineButton);
+		workspaceToolbar.add(saveButton);
+		workspaceToolbar.add(loadButton);
 		add(workspaceToolbar, BorderLayout.NORTH);
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -76,14 +91,18 @@ public class GUIRendWorkspace extends JFrame {
 		deletelineItem.addActionListener(new deleteComponent());
 		JMenuItem saveItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileSave"));
 		saveItem.setMnemonic('S');
+		saveItem.addActionListener(new saveState());
 		JMenuItem loadItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileLoad"));
 		loadItem.setMnemonic('L');
+		loadItem.addActionListener(new loadState());
 		JMenuItem sourceItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileSource"));
 		sourceItem.setMnemonic('O');
 		JMenuItem aboutItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileAbout"));
 		aboutItem.setMnemonic('A');
 		fileMenu.add(newlineItem);
 		fileMenu.add(deletelineItem);
+		fileMenu.add(saveItem);
+		fileMenu.add(loadItem);
 		fileMenu.add(sourceItem);
 		fileMenu.add(aboutItem);
 		
@@ -159,6 +178,45 @@ public class GUIRendWorkspace extends JFrame {
 			
 		}
 		
+	}
+	
+	class saveState implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser chooser = new JFileChooser(new File("."));
+			chooser.setFileSelectionMode (JFileChooser.FILES_ONLY);
+			if (chooser.showSaveDialog(GUIRendWorkspace.this)==JFileChooser.CANCEL_OPTION)
+				return;
+			File f = chooser.getSelectedFile();
+			if (f.exists())
+				if (JOptionPane.showConfirmDialog(GUIRendWorkspace.this, "Filen finnes, overskrive", "Bekreft", JOptionPane.QUESTION_MESSAGE)!=JOptionPane.YES_OPTION)
+					return;
+			try {
+				ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream(f));
+				workspaceModel.save (oos);
+				oos.close ();	
+			} catch (IOException ioe) {
+				System.err.println ("Feil på filhåndteringen.");
+			}
+			
+		}
+	}
+	
+	class loadState implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser chooser = new JFileChooser(new File("."));
+			chooser.setFileSelectionMode (JFileChooser.FILES_ONLY);
+			if (chooser.showOpenDialog(GUIRendWorkspace.this)==JFileChooser.CANCEL_OPTION)
+				return;
+			File f = chooser.getSelectedFile();
+			try {
+				ObjectInputStream ois = new ObjectInputStream (new FileInputStream(f));
+				workspaceModel.load (ois);
+				ois.close ();	
+			} catch (IOException ioe) {
+				System.err.println ("Feil på filhåndteringen.");
+			}
+		}
 	}
 	
 	public static void main (String args[]){
