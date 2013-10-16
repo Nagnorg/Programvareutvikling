@@ -3,6 +3,7 @@ package no.hig.MartinNGlen.GUIRenderer;
 import java.io.Serializable;
 
 public class BaseComponent implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String content;
 	private int row;

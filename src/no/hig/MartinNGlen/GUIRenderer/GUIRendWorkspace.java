@@ -180,27 +180,41 @@ public class GUIRendWorkspace extends JFrame {
 		
 	}
 	
+	// Save and Load taken from FileHandling example
+	
+	/** 
+	 * Takes the current list of objects in the file and outputs it to a file in a serialized format
+	 * @param chooser JFileChooser object, java's file selection mechanism 
+	 * @param workspaceModel ComponentModel object with all the necessary resources
+	 * @param ioe Signal of an input/output error
+	 */
 	class saveState implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser chooser = new JFileChooser(new File("."));
 			chooser.setFileSelectionMode (JFileChooser.FILES_ONLY);
-			if (chooser.showSaveDialog(GUIRendWorkspace.this)==JFileChooser.CANCEL_OPTION)
+			if (chooser.showSaveDialog(GUIRendWorkspace.this) == JFileChooser.CANCEL_OPTION)
 				return;
 			File f = chooser.getSelectedFile();
 			if (f.exists())
-				if (JOptionPane.showConfirmDialog(GUIRendWorkspace.this, "Filen finnes, overskrive", "Bekreft", JOptionPane.QUESTION_MESSAGE)!=JOptionPane.YES_OPTION)
+				if (JOptionPane.showConfirmDialog(GUIRendWorkspace.this, "Filen finnes, overskrive", "Bekreft", JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION)
 					return;
 			try {
-				ObjectOutputStream oos = new ObjectOutputStream (new FileOutputStream(f));
-				workspaceModel.save (oos);
-				oos.close ();	
-			} catch (IOException ioe) {
-				System.err.println ("Feil på filhåndteringen.");
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+				workspaceModel.save(oos);
+				oos.close();	
+			} catch(IOException ioe) {
+				System.err.println("Feil på filhåndteringen.");
 			}
 			
 		}
 	}
 	
+	/** 
+	 * Loads a serialized file into the workspace of the program
+	 * @param chooser JFileChooser object, java's file selection mechanism 
+	 * @param workspaceModel ComponentModel object with all the necessary resources
+	 * @param ioe Signal of an input/output error
+	 */
 	class loadState implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

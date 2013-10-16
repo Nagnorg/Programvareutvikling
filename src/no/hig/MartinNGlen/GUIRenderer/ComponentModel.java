@@ -148,6 +148,15 @@ public class ComponentModel extends AbstractTableModel{
 		
 	}
 	
+	// Save and Load taken from filehandling example
+	
+	/**
+	 * Handles the writing of the serialized data to the specified file
+	 * @param oos output stream of the designated file
+	 * @param componentData ComponentDecorator vector with the runtime objects
+	 * @param ioe Exception thrown from input/output errors
+	 */
+	
 	public void save (ObjectOutputStream oos) {
 		try {
 			for (int i = 0; i < componentData.size(); i++)
@@ -157,19 +166,27 @@ public class ComponentModel extends AbstractTableModel{
 		}
 	}
 	
+	/**
+	 * Clears all the ComponentDecorator objects and loads new ones from a file
+	 * @param ois input stream of the designated file
+	 * @param componentData ComponentDecorator vector with the runtime objects
+	 * @param cce Exception thrown from trying to cast an object to an unsuitable class
+	 * @param cnfe Exception thrown from trying to load an undefined class
+	 * @param ioe Exception thrown from input/output errors
+	 */
 	public void load (ObjectInputStream ois) {
 		componentData.clear();
 		try {
-			while (true) {
-				ComponentDecorator animal = (ComponentDecorator)ois.readObject();
-				componentData.add(animal);
+			while(true) {
+				ComponentDecorator item = (ComponentDecorator)ois.readObject();
+				componentData.add(item);
 			}
 		} catch (EOFException eofe) {
 			// Slutt på fila
 		} catch (ClassCastException cce) {
-			System.err.println ("OPPPSSSSS, dette var ingen dyrehage");
+			System.err.println ("Beklager, men filen inneholder objeckter som ikke er egnet til dette programmet");
 		} catch (ClassNotFoundException cnfe) {
-			System.err.println ("Oi, vi har mista ur-dyret.");
+			System.err.println ("Beklager, men filen inneholder objekter som ikke er egnet til dette programmet");
 		} catch (IOException ioe) {
 			System.err.println ("Feil under lesing fra fil");
 		} finally {
