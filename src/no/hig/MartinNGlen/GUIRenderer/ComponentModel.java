@@ -13,7 +13,10 @@ import javax.swing.table.*;
 
 public class ComponentModel extends AbstractTableModel{
 	private static final long serialVersionUID = 1L;
+<<<<<<< HEAD
 	private static int MAX_COLUMN = 9;
+=======
+>>>>>>> 7a4d96208873fa9c6372ded4c8ce08b73c49b84d
 	Locale  currentLocale = Locale.getDefault();
 	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
 	JFrame mainFrame;
