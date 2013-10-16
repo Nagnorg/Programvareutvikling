@@ -15,6 +15,8 @@ import java.util.ResourceBundle;
 import javax.swing.*;
 
 public class GUIRendWorkspace extends JFrame {
+	private static final long serialVersionUID = 1L;
+
 	private static int MAX_COMBOBOX = 4;
 	
 	private ComponentModel workspaceModel = new ComponentModel();

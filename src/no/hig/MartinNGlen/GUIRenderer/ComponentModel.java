@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.*;
 
 public class ComponentModel extends AbstractTableModel{
+	private static final long serialVersionUID = 1L;
 	Locale  currentLocale = Locale.getDefault();
 	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
 	JFrame mainFrame;
