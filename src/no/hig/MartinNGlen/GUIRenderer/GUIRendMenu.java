@@ -3,7 +3,8 @@ package no.hig.MartinNGlen.GUIRenderer;
 import javax.swing.*;
 
 public class GUIRendMenu extends JFrame{
-	
+	private static final long serialVersionUID = 1L;
+
 	public GUIRendMenu() {
 		super("GUImenu");
 		// Creates file menu and items

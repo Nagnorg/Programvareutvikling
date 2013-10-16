@@ -18,4 +18,8 @@ abstract class ComponentDecorator implements Serializable {
 	public String toString(){
 		return baseComponent.toString();
 	}
+	
+	public void contextWindow(){
+	}
+	
 }

@@ -3,9 +3,14 @@ package no.hig.MartinNGlen.GUIRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,11 +20,14 @@ import java.util.ResourceBundle;
 import javax.swing.*;
 
 public class GUIRendWorkspace extends JFrame {
+	private static final long serialVersionUID = 1L;
+
 	private static int MAX_COMBOBOX = 4;
 	
 	private ComponentModel workspaceModel = new ComponentModel();
 	private JTable workspaceTable = new JTable(workspaceModel);
 	private JToolBar workspaceToolbar = new JToolBar();
+	private JPopupMenu tablePopup = new JPopupMenu();
 	private String[] componentTypes = {"JLabel", "JTextField", "JTextArea", "JButton"};
 	private String[] componentFill = {"NONE", "HORIZONTAL", "VERTICAL", "BOTH"};
 	private String[] componentAnchor = {"CENTER", "NORTH", "NORTHEAST", "EAST", "SOUTH", "SOUTHEAST", "SOUTHWEST", "WEST", "NORTHWEST"};
@@ -74,6 +82,17 @@ public class GUIRendWorkspace extends JFrame {
 		workspaceToolbar.add(saveButton);
 		workspaceToolbar.add(loadButton);
 		add(workspaceToolbar, BorderLayout.NORTH);
+		
+		//popup menu creation
+		JMenuItem specialPropertiesItem = new JMenuItem(messages.getString("GUIRendWorkspace.popupProperties"));
+		JMenuItem deletelineItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileDeleteline"));
+		deletelineItem.addActionListener(new deleteComponent());
+		tablePopup.add(specialPropertiesItem);
+		tablePopup.add(deletelineItem);
+		
+	    MouseListener popupListener = new PopupListener();
+	    workspaceTable.addMouseListener(popupListener);
+	    
 		pack();
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -108,20 +127,14 @@ public class GUIRendWorkspace extends JFrame {
 		
 		JMenu windowMenu = new JMenu(messages.getString("GUIRendWorkspace.window"));
 		windowMenu.setMnemonic('W');
-		JMenuItem showWindowItem = new JMenuItem(messages.getString("GUIRendWorkspace.windowShow"));
-		showWindowItem.addActionListener(new ActionListener(){
+		JMenuItem toolbarWindowItem = new JMenuItem(messages.getString("GUIRendWorkspace.windowToolbar"));
+		toolbarWindowItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				workspaceToolbar.setVisible(true);
+				if(workspaceToolbar.isVisible() == true) workspaceToolbar.setVisible(false);
+				else workspaceToolbar.setVisible(true);
 			}
 		});
-		JMenuItem hideWindowItem = new JMenuItem(messages.getString("GUIRendWorkspace.windowHide"));
-		hideWindowItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				workspaceToolbar.setVisible(false);
-			}
-		});
-		windowMenu.add(showWindowItem);
-		windowMenu.add(hideWindowItem);
+		windowMenu.add(toolbarWindowItem);
 		
 		// Creates the menu bar
 		JMenuBar menuBar = new JMenuBar();
@@ -231,6 +244,33 @@ public class GUIRendWorkspace extends JFrame {
 				System.err.println ("Feil på filhåndteringen.");
 			}
 		}
+	}
+	
+	class editSpecificContent implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			workspaceModel.getData(workspaceTable.getSelectedRow()).contextWindow();
+			
+		}
+		
+	}
+	
+	class PopupListener extends MouseAdapter {
+	    public void mousePressed(MouseEvent e) {
+	        showPopup(e);
+	    }
+
+	    public void mouseReleased(MouseEvent e) {
+	        showPopup(e);
+	    }
+
+	    private void showPopup(MouseEvent e) {
+	        if (e.isPopupTrigger()&&workspaceTable.getSelectedRow()!= -1) {
+	            tablePopup.show(e.getComponent(),
+	                       e.getX(), e.getY());
+	        }
+	    }
 	}
 	
 	public static void main (String args[]){

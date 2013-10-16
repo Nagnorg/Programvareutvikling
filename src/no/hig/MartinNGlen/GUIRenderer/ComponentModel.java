@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.*;
 
 public class ComponentModel extends AbstractTableModel{
+	private static final long serialVersionUID = 1L;
+	private static int MAX_COLUMN = 9;
 	Locale  currentLocale = Locale.getDefault();
 	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
 	JFrame mainFrame;
@@ -32,6 +34,7 @@ public class ComponentModel extends AbstractTableModel{
 	}
 	
 	public void removeComponentEntry(int row) {
+		componentData.remove(row);
 		fireTableRowsDeleted(row, row);
 	}
 	
@@ -49,7 +52,10 @@ public class ComponentModel extends AbstractTableModel{
 	}
 	@Override
 	public int getColumnCount() {
-		return 9;
+		return MAX_COLUMN;
+	}
+	public ComponentDecorator getData(int row){
+		return componentData.get(row);
 	}
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
