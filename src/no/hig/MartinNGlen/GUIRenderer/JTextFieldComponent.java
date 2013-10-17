@@ -19,6 +19,9 @@ public class JTextFieldComponent extends ComponentDecorator{
 	JSpinner columnSpinner; JSpinner widthSpinner; JSpinner heightSpinner;
 	JFrame contextWindow;
 
+	// Set up for internationalization.
+	Locale  currentLocale = Locale.getDefault();
+	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
 	public JTextFieldComponent(BaseComponent newComponent) {
 		super(newComponent);
 		column = 0; width = 0; height = 0;
@@ -45,19 +48,19 @@ public class JTextFieldComponent extends ComponentDecorator{
 		JPanel contextPanel = new JPanel();
 		JPanel spinnerPanel = new JPanel();
 		
-		spinnerPanel.add(new JLabel("column: "));
+		spinnerPanel.add(new JLabel(messages.getString("ComponentDecorator.specificDataColumn")+": "));
 		columnSpinner = new JSpinner(new SpinnerNumberModel(column, 0, 100, 1));
 		spinnerPanel.add(columnSpinner);
-		spinnerPanel.add(new JLabel("Width: "));
+		spinnerPanel.add(new JLabel(messages.getString("ComponentDecorator.specificDataWidth")+": "));
 		widthSpinner = new JSpinner(new SpinnerNumberModel(width, 0, 100, 1));
 		spinnerPanel.add(widthSpinner);
-		spinnerPanel.add(new JLabel("Height: "));
+		spinnerPanel.add(new JLabel(messages.getString("ComponentDecorator.specificDataHeight")+": "));
 		heightSpinner = new JSpinner(new SpinnerNumberModel(height, 0, 100, 1));
 		contextPanel.add(spinnerPanel);
 		
 		contextWindow.add(contextPanel, BorderLayout.CENTER);
 		
-		JButton okButton = new JButton("Ok");
+		JButton okButton = new JButton(messages.getString("ComponentDecorator.specificDataOkButton"));
 		okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				column = (Integer)columnSpinner.getValue();

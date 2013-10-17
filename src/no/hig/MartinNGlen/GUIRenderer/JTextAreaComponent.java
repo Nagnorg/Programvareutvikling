@@ -25,7 +25,9 @@ public class JTextAreaComponent extends ComponentDecorator{
 	JCheckBox scrollPane; JCheckBox wordWrap; 
 	JFrame contextWindow;
 	
-	
+	// Set up for internationalization.
+	Locale  currentLocale = Locale.getDefault();
+	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
 	public JTextAreaComponent(BaseComponent newComponent) {
 		super(newComponent);
 		row = 0; width = 0; height = 0;
@@ -70,24 +72,25 @@ public class JTextAreaComponent extends ComponentDecorator{
 		
 		contextPanel.setLayout(gLayout);
 		
-		spinnerPanel.add(new JLabel("Row: "));
-		rowSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+		spinnerPanel.add(new JLabel(messages.getString("ComponentDecorator.specificDataRow")+": "));
+		rowSpinner = new JSpinner(new SpinnerNumberModel(row, 0, 100, 1));
 		spinnerPanel.add(rowSpinner);
-		spinnerPanel.add(new JLabel("Width: "));
-		widthSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+		spinnerPanel.add(new JLabel(messages.getString("ComponentDecorator.specificDataColumn")+": "));
+		columnSpinner = new JSpinner(new SpinnerNumberModel(column,0,100,1));
+		spinnerPanel.add(columnSpinner);
+		spinnerPanel.add(new JLabel(messages.getString("ComponentDecorator.specificDataWidth")+": "));
+		widthSpinner = new JSpinner(new SpinnerNumberModel(width, 0, 100, 1));
 		spinnerPanel.add(widthSpinner);
-		spinnerPanel.add(new JLabel("Height: "));
-		heightSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+		spinnerPanel.add(new JLabel(messages.getString("ComponentDecorator.specificDataHeight")+": "));
+		heightSpinner = new JSpinner(new SpinnerNumberModel(height, 0, 100, 1));
 		spinnerPanel.add(heightSpinner);
-		spinnerPanel.add(new JLabel("Coulumn: "));
-		columnSpinner = new JSpinner(new SpinnerNumberModel(0,0,100,1));
 		
 		contextPanel.add(spinnerPanel);
 		
-		wordWrap = new JCheckBox("Wordwrap text in area");
+		wordWrap = new JCheckBox(messages.getString("ComponentDecorator.specificDataWordWrap"));
 		checkBoxPanel.add(wordWrap);
 		wordWrap.setSelected(isWordWrap);
-		scrollPane = new JCheckBox("Put area in scroll pane");
+		scrollPane = new JCheckBox(messages.getString("ComponentDecorator.specificDataScrollPane"));
 		scrollPane.setSelected(isScrollPane);
 		checkBoxPanel.add(scrollPane);
 		contextPanel.add(checkBoxPanel);
@@ -95,7 +98,7 @@ public class JTextAreaComponent extends ComponentDecorator{
 		
 		contextWindow.add(contextPanel, BorderLayout.CENTER);
 		
-		JButton okButton = new JButton("Ok");
+		JButton okButton = new JButton(messages.getString("ComponentDecorator.specificDataOkButton"));
 		okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				row = (Integer)rowSpinner.getValue();
