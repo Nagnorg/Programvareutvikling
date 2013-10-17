@@ -125,13 +125,9 @@ public class GUIRendWorkspace extends JFrame {
 		loadItem.addActionListener(new loadState());
 		
 		JMenuItem sourceItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileSource"));
-<<<<<<< HEAD
-		sourceItem.setMnemonic('O');
+		sourceItem.setMnemonic('G');
 		sourceItem.addActionListener(new generateCode());
-=======
-		sourceItem.setMnemonic('C');
 		
->>>>>>> 2ee677ea3dd3e842ad3cb1c3c77e6c5c94bf0114
 		JMenuItem aboutItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileAbout"));
 		aboutItem.setMnemonic('A');
 		
@@ -309,7 +305,6 @@ public class GUIRendWorkspace extends JFrame {
 		}
 	}
 	
-<<<<<<< HEAD
 	/**
 	 * Creates a source code out of all the created objects
 	 * @param chooser JFileChoosen object, java's file selection mechanism
@@ -373,8 +368,6 @@ public class GUIRendWorkspace extends JFrame {
 			}
 		}
 	}
-=======
->>>>>>> 2ee677ea3dd3e842ad3cb1c3c77e6c5c94bf0114
 	
 	class editSpecificContent implements ActionListener{
 		@Override

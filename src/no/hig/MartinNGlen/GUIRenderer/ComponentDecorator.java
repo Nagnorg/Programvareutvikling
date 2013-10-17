@@ -27,7 +27,8 @@ abstract class ComponentDecorator implements Serializable {
 		return baseComponent.stringDefine();
 	}
 	
-	public void contextWindow() {
-	
-	}
+	/**
+	 * Creates window specifically for each decoration with ways to edit its specific data.
+	 */
+	public abstract void contextWindow();
 }

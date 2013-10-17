@@ -4,7 +4,6 @@ public class JLabelComponent extends ComponentDecorator {
 	
 	public JLabelComponent(BaseComponent newComponent) {
 		super(newComponent);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public String toString() {
@@ -14,5 +13,8 @@ public class JLabelComponent extends ComponentDecorator {
 	public String stringDeclare() {
 		return "\tJLabelComponent " +baseComponent.getName()+ " = new JLabelComponent(\"" +baseComponent.getContent()+ "\");";
 	}
+	
+	@Override
+	public void contextWindow() {}
 
 }
