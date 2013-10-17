@@ -7,10 +7,6 @@ public class JLabelComponent extends ComponentDecorator {
 		super(newComponent);
 	}
 	
-	public String toString() {
-		return " ";
-	}
-	
 	/**
 	 * Provides a string that declares a JLabel object
 	 * @return a string declaring the object

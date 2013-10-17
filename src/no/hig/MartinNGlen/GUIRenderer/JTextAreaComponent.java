@@ -33,7 +33,7 @@ public class JTextAreaComponent extends ComponentDecorator{
 	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
 	public JTextAreaComponent(BaseComponent newComponent) {
 		super(newComponent);
-		row = 0; width = 0; height = 0;
+		row = 0; width = 0; height = 0; column = 0;
 		isScrollPane = true; isWordWrap = true;
 	}
 

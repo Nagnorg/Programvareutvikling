@@ -273,7 +273,7 @@ public class GUIRendWorkspace extends JFrame {
 				return;
 			File f = chooser.getSelectedFile();
 			if (f.exists())
-				if (JOptionPane.showConfirmDialog(GUIRendWorkspace.this, messages.getString("GUIRendWorkspace.fileExistMessage"), messages.getString("GUIRendWorkspace.fileExistConfirm"), JOptionPane.QUESTION_MESSAGE) != JOptionPane.YES_OPTION)
+				if (JOptionPane.showConfirmDialog(GUIRendWorkspace.this, messages.getString("GUIRendWorkspace.fileExistMessage"), messages.getString("GUIRendWorkspace.fileExistConfirm"), JOptionPane.YES_NO_OPTION)!=JOptionPane.YES_OPTION)
 					return;
 			try {
 				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));

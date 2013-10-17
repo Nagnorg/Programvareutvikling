@@ -182,8 +182,8 @@ public class ComponentModel extends AbstractTableModel{
 	
 	public void save (ObjectOutputStream oos) {
 		try {
-			for (int i = 0; i < componentData.size(); i++)
-				oos.writeObject(componentData.get(i));
+			for (ComponentDecorator item : componentData)
+				oos.writeObject(item);
 		} catch (IOException ioe) {
 			System.err.println (messages.getString("ErrorMessage.IOException"));
 		}
