@@ -102,31 +102,42 @@ public class ComponentModel extends AbstractTableModel{
 		}
 		return null;
 	}
+	
+	/**
+	 * Handles the editing of object data when the user changes values in the table
+	 * @param aValue an object containing the relevant data used for editing
+	 * @param rowIndex the index of the selected row
+	 * @param columnIndex the index of the selected column
+	 */
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		ComponentDecorator component = componentData.get(rowIndex);
-		if (columnIndex>0 && columnIndex < 7){
+		
+		// User edited input delivered in the form of text or numbers, the columns 1 to 7
+		if (columnIndex > 0 && columnIndex < 7) {
 			switch(columnIndex){
-				case 1 : ((BaseComponent)component.getBaseComponent()).setName ((String)aValue); break; 
-				case 2 : ((BaseComponent)component.getBaseComponent()).setContent ((String)aValue); break;
-				case 3 : ((BaseComponent)component.getBaseComponent()).setRow((Integer)aValue); break;
-				case 4 : ((BaseComponent)component.getBaseComponent()).setColumn((Integer)aValue); break;
-				case 5 : ((BaseComponent)component.getBaseComponent()).setNumOfRows((Integer)aValue); break;
-				case 6 : ((BaseComponent)component.getBaseComponent()).setNumOfColumns((Integer)aValue); break;
+				case 1 : ((BaseComponent)component.getBaseComponent()).setName ((String) aValue); break; 
+				case 2 : ((BaseComponent)component.getBaseComponent()).setContent ((String) aValue); break;
+				case 3 : ((BaseComponent)component.getBaseComponent()).setRow((Integer) aValue); break;
+				case 4 : ((BaseComponent)component.getBaseComponent()).setColumn((Integer) aValue); break;
+				case 5 : ((BaseComponent)component.getBaseComponent()).setNumOfRows((Integer) aValue); break;
+				case 6 : ((BaseComponent)component.getBaseComponent()).setNumOfColumns((Integer) aValue); break;
 			}
 		}
-		else if (columnIndex==7){
-			switch((Integer)aValue){
+		
+		// Sets information about the fill method of the object
+		else if (columnIndex == 7){
+			switch((Integer) aValue){
 				case 0 : ((BaseComponent)component.getBaseComponent()).setFill("NONE"); break;
 				case 1 : ((BaseComponent)component.getBaseComponent()).setFill("HORIZONTAL"); break;
 				case 2 : ((BaseComponent)component.getBaseComponent()).setFill("VERTICAL"); break;
 				case 3 : ((BaseComponent)component.getBaseComponent()).setFill("BOTH"); break;
-			}
-				
-			
+			}	
 		}
-		else if (columnIndex==8){
-			switch((Integer)aValue){
+		
+		// Sets information about the anchoring of the object
+		else if (columnIndex == 8){
+			switch((Integer) aValue){
 				case 0 : ((BaseComponent)component.getBaseComponent()).setAnchor("CENTER"); break;
 				case 1 : ((BaseComponent)component.getBaseComponent()).setAnchor("NORTH"); break;
 				case 2 : ((BaseComponent)component.getBaseComponent()).setAnchor("NORTHEAST"); break;
@@ -138,15 +149,17 @@ public class ComponentModel extends AbstractTableModel{
 				case 9 : ((BaseComponent)component.getBaseComponent()).setAnchor("NORTHWEST"); break;
 			}
 		}
-		else if (columnIndex==0) {
+		
+		// Handles information regarding the type of ComponentDecorator child object used
+		else if (columnIndex == 0) {
 			ComponentDecorator newComponent = null;
-			if (((String)aValue).equals("JLabel"))
+			if (((String) aValue).equals("JLabel"))
 				newComponent = new JLabelComponent (component.getBaseComponent());
-			else if(((String)aValue).equals("JTextField"))
+			else if(((String) aValue).equals("JTextField"))
 				newComponent = new JTextFieldComponent(component.getBaseComponent());
-			else if(((String)aValue).equals("JTextArea"))
+			else if(((String) aValue).equals("JTextArea"))
 				newComponent = new JTextAreaComponent(component.getBaseComponent());
-			else if(((String)aValue).equals("JButton"))
+			else if(((String) aValue).equals("JButton"))
 				newComponent = new JButtonComponent(component.getBaseComponent());
 			componentData.set(rowIndex, newComponent);
 		}

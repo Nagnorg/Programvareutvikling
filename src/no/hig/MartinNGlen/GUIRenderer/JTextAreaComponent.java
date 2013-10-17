@@ -43,7 +43,7 @@ public class JTextAreaComponent extends ComponentDecorator{
 	 */
 	public String stringDeclare() {
 		if(row != 0 || column != 0) return "\tJTextArea " +baseComponent.getName()+ " = new JTextArea(\"" +baseComponent.getContent()+ "\");";
-		else return "\tJTextArea " +baseComponent.getName()+ " =new JTextArea(\"" +baseComponent.getContent()+ ", " +row+ ", " +column+ "\");";
+		else return "\tJTextArea " +baseComponent.getName()+ " = new JTextArea(\"" +baseComponent.getContent()+ ", " +row+ ", " +column+ "\");";
 	}
 	
 	/**
