@@ -7,6 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+
 public class JTextAreaComponent extends ComponentDecorator{
 	
 	int row; int width; int height; int column; 
@@ -25,7 +33,32 @@ public class JTextAreaComponent extends ComponentDecorator{
 	}
 
 	public String stringDeclare() {
-		return "\tJTextAreaComponent " +baseComponent.getName()+ " = new JTextAreaComponent(\"" +baseComponent.getContent()+ "\");";
+		if(row == 0 && column == 0) return "\tJTextArea " +baseComponent.getName()+ " = new JTextArea(\"" +baseComponent.getContent()+ "\");";
+		else return "\tJTextArea " +baseComponent.getName()+ " =new JTextArea(\"" +baseComponent.getContent()+ ", " +row+ ", " +column+ "\");";
+	}
+	
+	/**
+	 * @param sb the object-universal content defined in the baseComponent class
+	 * @return a string that defines all the content of the object
+	 */
+	public String stringDefine() {
+		String name = baseComponent.getName();
+		StringBuilder sb = new StringBuilder(baseComponent.stringDefine());
+		if(!isScrollPane) {
+			sb.append("\t\tlayout.setConstraints(" +name+ ", gbc);\n");
+			sb.append("\t\tadd(" +name+ ");\n");
+		}
+		else {
+			sb.append("\t\tJScrollPane " +name+ "ScrollPane = new JScrollPane(" +name+ ");\n");
+			sb.append("\t\t" +name+ "ScrollPane.setPreferredSize(new java.awt.Dimension(" +width+ ", " +height+ "));\n");
+			sb.append("\t\tlayout.setConstraints(" +name+ "ScrollPane, gbc);\n");
+			sb.append("\t\tadd(" +name+ ");\n");
+		}
+		if(!isWordWrap) {
+			sb.append("\t\t" +name+ ".setLineWrap(true);\n");
+			sb.append("\t\t" +name+ ".setWrapStyleWord(true);\n");
+		}
+		return sb.toString();
 	}
 	
 	public void contextWindow(){

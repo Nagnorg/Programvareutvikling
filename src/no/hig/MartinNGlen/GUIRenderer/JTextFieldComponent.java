@@ -14,18 +14,28 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 public class JTextFieldComponent extends ComponentDecorator{
 	
-	int row; int width; int height;
+	int column; int width; int height;
 	
-	JSpinner rowSpinner; JSpinner widthSpinner; JSpinner heightSpinner;
+	JSpinner columnSpinner; JSpinner widthSpinner; JSpinner heightSpinner;
 	JFrame contextWindow;
 
 	public JTextFieldComponent(BaseComponent newComponent) {
 		super(newComponent);
-		row = 0; width = 0; height = 0;
+		column = 0; width = 0; height = 0;
 	}
 	
 	public String stringDeclare() {
-		return "\tJTextFieldComponent " +baseComponent.getName()+ " = new JTextFieldComponent(\"" +baseComponent.getContent()+ "\");";
+		if(column == 0) return "\tJTextField " +baseComponent.getName()+ " = new JTextField(\"" +baseComponent.getContent()+ "\");";
+		else return "\tJTextField " +baseComponent.getName()+ " = new JTextField(\"" +baseComponent.getContent()+ ", " +column+ "\");";
+	}
+	
+	public String stringDefine() {
+		String name = baseComponent.getName();
+		StringBuilder sb = new StringBuilder(baseComponent.stringDefine());
+		if(width != 0 || height != 0) sb.append("\t\t" +name+ ".setPreferredSize(new java.awt.Dimension (" +width+ ", " +height+ "));\n");
+		sb.append("\t\tlayout.setConstraints(" +name+ ", gbc);\n");
+		sb.append("\t\tadd(" +name+ ");\n");
+		return sb.toString();
 	}
 
 	@Override
@@ -35,9 +45,9 @@ public class JTextFieldComponent extends ComponentDecorator{
 		JPanel contextPanel = new JPanel();
 		JPanel spinnerPanel = new JPanel();
 		
-		spinnerPanel.add(new JLabel("Row: "));
-		rowSpinner = new JSpinner(new SpinnerNumberModel(row, 0, 100, 1));
-		spinnerPanel.add(rowSpinner);
+		spinnerPanel.add(new JLabel("column: "));
+		columnSpinner = new JSpinner(new SpinnerNumberModel(column, 0, 100, 1));
+		spinnerPanel.add(columnSpinner);
 		spinnerPanel.add(new JLabel("Width: "));
 		widthSpinner = new JSpinner(new SpinnerNumberModel(width, 0, 100, 1));
 		spinnerPanel.add(widthSpinner);
@@ -50,7 +60,7 @@ public class JTextFieldComponent extends ComponentDecorator{
 		JButton okButton = new JButton("Ok");
 		okButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				row = (Integer)rowSpinner.getValue();
+				column = (Integer)columnSpinner.getValue();
 				width = (Integer)widthSpinner.getValue();
 				height = (Integer)heightSpinner.getValue();
 				if(contextWindow != null) {

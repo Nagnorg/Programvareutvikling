@@ -24,11 +24,14 @@ abstract class ComponentDecorator implements Serializable {
 	}
 	
 	public String stringDefine() {
-		return baseComponent.stringDefine();
+		String name = baseComponent.getName();
+		StringBuilder sb = new StringBuilder(baseComponent.stringDefine());
+		sb.append("\t\tlayout.setConstraints(" +name+ ", gbc);\n");
+		sb.append("\t\tadd(" +name+ ");\n");
+		return sb.toString();
 	}
 	
-	/**
-	 * Creates window specifically for each decoration with ways to edit its specific data.
-	 */
-	public abstract void contextWindow();
+	public void contextWindow() {
+	
+	}
 }

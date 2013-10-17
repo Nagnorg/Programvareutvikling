@@ -11,7 +11,7 @@ public class JLabelComponent extends ComponentDecorator {
 	}
 	
 	public String stringDeclare() {
-		return "\tJLabelComponent " +baseComponent.getName()+ " = new JLabelComponent(\"" +baseComponent.getContent()+ "\");";
+		return "\tJLabel " +baseComponent.getName()+ " = new JLabel(\"" +baseComponent.getContent()+ "\");";
 	}
 	
 	@Override

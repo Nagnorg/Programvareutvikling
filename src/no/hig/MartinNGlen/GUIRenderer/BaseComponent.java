@@ -44,11 +44,10 @@ public class BaseComponent implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\t\tgbc.gridx = " +column+ ";\n");
 		sb.append("\t\tgbc.gridx = " +row+ ";\n");
-		sb.append("\t\tgbc.gridweight = " +numOfColumns+ ";\n");
+		sb.append("\t\tgbc.gridwidth = " +numOfColumns+ ";\n");
 		sb.append("\t\tgbc.gridheight = " +numOfRows+ ";\n");
-		sb.append("\t\tgbc.anchor = jawa.awt.GridBagConstraints." +anchor+ ";\n");
-		sb.append("\t\tgbc.fill = jawa.awt.GridBagConstraints." +fill+ ";\n");
-		sb.append("\t\tlayout.setConstraints(" +name+ ", gbc);\n");
+		sb.append("\t\tgbc.anchor = java.awt.GridBagConstraints." +anchor+ ";\n");
+		sb.append("\t\tgbc.fill = java.awt.GridBagConstraints." +fill+ ";\n");
 		return sb.toString();
 	}
 

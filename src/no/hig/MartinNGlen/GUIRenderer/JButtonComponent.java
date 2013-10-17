@@ -7,7 +7,7 @@ public class JButtonComponent extends ComponentDecorator{
 	}
 	
 	public String stringDeclare() {
-		return "\tJButtonComponent " +baseComponent.getName()+ " = new JButtonComponent(\"" +baseComponent.getContent()+ "\");";
+		return "\tJButton " +baseComponent.getName()+ " = new JButton(\"" +baseComponent.getContent()+ "\");";
 	}
 	
 	@Override
