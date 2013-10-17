@@ -132,8 +132,6 @@ public class GUIRendWorkspace extends JFrame {
 		fileMenu.add(saveItem);
 		fileMenu.add(loadItem);
 		fileMenu.add(sourceItem);
-		fileMenu.addSeparator();
-		fileMenu.add(aboutItem);
 		
 		JMenu windowMenu = new JMenu(messages.getString("GUIRendWorkspace.window"));
 		windowMenu.setMnemonic('W');
