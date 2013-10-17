@@ -21,6 +21,12 @@ import java.util.Vector;
 
 import javax.swing.*;
 
+/**
+ * Class containing creation of GUI and most of its handling for the GUI renderer.
+ * @version 0.1
+ * @author Glen & Martin
+ *
+ */
 public class GUIRendWorkspace extends JFrame {
 	private static final long serialVersionUID = 1L;
 
@@ -28,14 +34,17 @@ public class GUIRendWorkspace extends JFrame {
 	
 	private ComponentModel workspaceModel = new ComponentModel();
 	private JTable workspaceTable = new JTable(workspaceModel);
-	private JToolBar workspaceToolbar = new JToolBar();
+	private JMenuBar workspaceMenu;
+	private JToolBar workspaceToolbar;
 	private JPopupMenu tablePopup = new JPopupMenu();
+	
 	private String[] componentTypes = {"JLabel", "JTextField", "JTextArea", "JButton"};
 	private String[] componentFill = {"NONE", "HORIZONTAL", "VERTICAL", "BOTH"};
 	private String[] componentAnchor = {"CENTER", "NORTH", "NORTHEAST", "EAST", "SOUTH", "SOUTHEAST", "SOUTHWEST", "WEST", "NORTHWEST"};
 	private JComboBox componentTypeEditor = new JComboBox (componentTypes);
 	private JComboBox componentFillEditor;
 	private JComboBox componentAnchorEditor;
+	
 	// Set up for internationalization.
 	Locale  currentLocale = Locale.getDefault();
 	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
@@ -43,12 +52,15 @@ public class GUIRendWorkspace extends JFrame {
 	public GUIRendWorkspace (){
 		super("GUIRenderer");
 		
-		createMenu();
+		workspaceMenu = createMenu();
+		workspaceToolbar = createToolbar();
 		
 		//table creation
 		workspaceModel.setTableFrame(this);
 		add(new JScrollPane(workspaceTable));
-		workspaceTable.setRowHeight(27);
+		workspaceTable.setRowHeight(27);		// Set row height as 27 for icons in rows.
+		
+		// Fills the combobox for "fill" and "anchor" with icons.
 		Integer[] intArray = new Integer[componentFill.length];
 		
 		for(int i = 0; i < componentFill.length; i++) intArray[i] = new Integer(i);
@@ -61,11 +73,101 @@ public class GUIRendWorkspace extends JFrame {
 		componentAnchorEditor.setRenderer(new IconComboBox(componentAnchor));
 		componentAnchorEditor.setMaximumRowCount(MAX_COMBOBOX);
 		
+		// Fills non-free editable columns with filled combo boxes.
 		workspaceTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(componentTypeEditor));
 		workspaceTable.getColumnModel().getColumn(7).setCellEditor(new DefaultCellEditor(componentFillEditor));
 		workspaceTable.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(componentAnchorEditor));
 		workspaceModel.addNewComponentEntry();
 		
+		//popup menu creation
+		JMenuItem specialPropertiesItem = new JMenuItem(messages.getString("GUIRendWorkspace.popupProperties"));
+		specialPropertiesItem.addActionListener(new editSpecificContent());
+		JMenuItem deletelineItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileDeleteline"));
+		deletelineItem.addActionListener(new deleteComponent());
+		
+		tablePopup.add(specialPropertiesItem);
+		tablePopup.add(deletelineItem);
+		
+	    MouseListener popupListener = new PopupListener();
+	    workspaceTable.addMouseListener(popupListener);
+	    
+	    setJMenuBar(workspaceMenu);
+	    add(workspaceToolbar, BorderLayout.NORTH);
+		
+	    pack();
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+	}
+	
+	/**
+	 * Creates the menu used by the GUI
+	 * @return JMenu specific for the project
+	 */
+	public JMenuBar createMenu() {
+		// Creates file menu and items
+		JMenu fileMenu = new JMenu(messages.getString("GUIRendWorkspace.file"));
+		fileMenu.setMnemonic('F');
+		
+		JMenuItem newlineItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileNewline"));
+		newlineItem.setMnemonic('N');
+		newlineItem.addActionListener(new newComponent());
+		
+		JMenuItem deletelineItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileDeleteline"));
+		deletelineItem.setMnemonic('D');
+		deletelineItem.addActionListener(new deleteComponent());
+		
+		JMenuItem saveItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileSave"));
+		saveItem.setMnemonic('S');
+		saveItem.addActionListener(new saveState());
+		
+		JMenuItem loadItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileLoad"));
+		loadItem.setMnemonic('L');
+		loadItem.addActionListener(new loadState());
+		
+		JMenuItem sourceItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileSource"));
+<<<<<<< HEAD
+		sourceItem.setMnemonic('O');
+		sourceItem.addActionListener(new generateCode());
+=======
+		sourceItem.setMnemonic('C');
+		
+>>>>>>> 2ee677ea3dd3e842ad3cb1c3c77e6c5c94bf0114
+		JMenuItem aboutItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileAbout"));
+		aboutItem.setMnemonic('A');
+		
+		fileMenu.add(newlineItem);
+		fileMenu.add(deletelineItem);
+		fileMenu.add(saveItem);
+		fileMenu.add(loadItem);
+		fileMenu.add(sourceItem);
+		fileMenu.add(aboutItem);
+		
+		JMenu windowMenu = new JMenu(messages.getString("GUIRendWorkspace.window"));
+		windowMenu.setMnemonic('W');
+		
+		JMenuItem toolbarWindowItem = new JMenuItem(messages.getString("GUIRendWorkspace.windowToolbar"));
+		toolbarWindowItem.setMnemonic('T');
+		toolbarWindowItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				if(workspaceToolbar.isVisible() == true) workspaceToolbar.setVisible(false);
+				else workspaceToolbar.setVisible(true);
+			}
+		});
+		
+		windowMenu.add(toolbarWindowItem);
+		
+		// Creates the menu bar
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.add(fileMenu);
+		menuBar.add(windowMenu);
+		return menuBar;
+	}
+	
+	/**
+	 * Creates the toolbar for the GUI
+	 * @return JToolBar specific for the project
+	 */
+	public JToolBar createToolbar(){
 		//toolbar creation
 		JButton newlineButton = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/newlineIcon.png")));
 		newlineButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarNewline"));
@@ -80,72 +182,20 @@ public class GUIRendWorkspace extends JFrame {
 		saveButton.addActionListener(new saveState());
 		loadButton.addActionListener(new loadState());
 		
-		workspaceToolbar.add(newlineButton);
-		workspaceToolbar.add(saveButton);
-		workspaceToolbar.add(loadButton);
-		add(workspaceToolbar, BorderLayout.NORTH);
+		JToolBar toolBar = new JToolBar();
+		toolBar.add(newlineButton);
+		toolBar.add(saveButton);
+		toolBar.add(loadButton);
 		
-		//popup menu creation
-		JMenuItem specialPropertiesItem = new JMenuItem(messages.getString("GUIRendWorkspace.popupProperties"));
-		JMenuItem deletelineItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileDeleteline"));
-		deletelineItem.addActionListener(new deleteComponent());
-		tablePopup.add(specialPropertiesItem);
-		tablePopup.add(deletelineItem);
-		
-	    MouseListener popupListener = new PopupListener();
-	    workspaceTable.addMouseListener(popupListener);
-	    
-		pack();
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+		return toolBar;
 	}
 	
-	public void createMenu() {
-		// Creates file menu and items
-		JMenu fileMenu = new JMenu(messages.getString("GUIRendWorkspace.file"));
-		fileMenu.setMnemonic('F');
-		JMenuItem newlineItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileNewline"));
-		newlineItem.setMnemonic('N');
-		newlineItem.addActionListener(new newComponent());
-		JMenuItem deletelineItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileDeleteline"));
-		deletelineItem.setMnemonic('D');
-		deletelineItem.addActionListener(new deleteComponent());
-		JMenuItem saveItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileSave"));
-		saveItem.setMnemonic('S');
-		saveItem.addActionListener(new saveState());
-		JMenuItem loadItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileLoad"));
-		loadItem.setMnemonic('L');
-		loadItem.addActionListener(new loadState());
-		JMenuItem sourceItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileSource"));
-		sourceItem.setMnemonic('O');
-		sourceItem.addActionListener(new generateCode());
-		JMenuItem aboutItem = new JMenuItem(messages.getString("GUIRendWorkspace.fileAbout"));
-		aboutItem.setMnemonic('A');
-		fileMenu.add(newlineItem);
-		fileMenu.add(deletelineItem);
-		fileMenu.add(saveItem);
-		fileMenu.add(loadItem);
-		fileMenu.add(sourceItem);
-		fileMenu.add(aboutItem);
-		
-		JMenu windowMenu = new JMenu(messages.getString("GUIRendWorkspace.window"));
-		windowMenu.setMnemonic('W');
-		JMenuItem toolbarWindowItem = new JMenuItem(messages.getString("GUIRendWorkspace.windowToolbar"));
-		toolbarWindowItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				if(workspaceToolbar.isVisible() == true) workspaceToolbar.setVisible(false);
-				else workspaceToolbar.setVisible(true);
-			}
-		});
-		windowMenu.add(toolbarWindowItem);
-		
-		// Creates the menu bar
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		menuBar.add(fileMenu);
-		menuBar.add(windowMenu);
-	}
-	
+	/**
+	 * 
+	 * Draws every member of the combobox as a icon.
+	 * @source "/images/tables/*icontype*Icon.png
+	 *
+	 */
 	public class IconComboBox extends JLabel implements ListCellRenderer{
 		
 		String[] componentArray;
@@ -176,7 +226,11 @@ public class GUIRendWorkspace extends JFrame {
 		}
 
 	}
-	
+	/**
+	 * 
+	 * Adds a new component item in the model
+	 *
+	 */
 	class newComponent implements ActionListener{
 
 		@Override
@@ -186,6 +240,11 @@ public class GUIRendWorkspace extends JFrame {
 		
 	}
 	
+	/**
+	 * 
+	 * removes a component item from the model
+	 *
+	 */
 	class deleteComponent implements ActionListener{
 
 		@Override
@@ -250,6 +309,7 @@ public class GUIRendWorkspace extends JFrame {
 		}
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Creates a source code out of all the created objects
 	 * @param chooser JFileChoosen object, java's file selection mechanism
@@ -313,17 +373,20 @@ public class GUIRendWorkspace extends JFrame {
 			}
 		}
 	}
+=======
+>>>>>>> 2ee677ea3dd3e842ad3cb1c3c77e6c5c94bf0114
 	
 	class editSpecificContent implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			workspaceModel.getData(workspaceTable.getSelectedRow()).contextWindow();
-			
 		}
 		
 	}
-	
+	/**
+	 * Creates a popup at mouse if it clicks on the table while a row is selected
+	 *
+	 */
 	class PopupListener extends MouseAdapter {
 	    public void mousePressed(MouseEvent e) {
 	        showPopup(e);
