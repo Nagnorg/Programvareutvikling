@@ -27,10 +27,7 @@ public class JTextAreaComponent extends ComponentDecorator{
 	JSpinner rowSpinner; JSpinner widthSpinner; JSpinner heightSpinner; JSpinner columnSpinner;
 	JCheckBox scrollPane; JCheckBox wordWrap; 
 	JFrame contextWindow;
-	
-	// Setup for internationalization.
-	Locale  currentLocale = Locale.getDefault();
-	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
+
 	public JTextAreaComponent(BaseComponent newComponent) {
 		super(newComponent);
 		row = 0; width = 0; height = 0; column = 0;
@@ -75,6 +72,10 @@ public class JTextAreaComponent extends ComponentDecorator{
 	
 	// Provides a window for manipulating JTextArea specific attributes
 	public void contextWindow(){
+		// Setup for internationalization.
+		Locale  currentLocale = Locale.getDefault();
+		ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
+		
 		contextWindow = new JFrame();
 		GridLayout gLayout = new GridLayout(0, 1);
 		JPanel contextPanel = new JPanel();

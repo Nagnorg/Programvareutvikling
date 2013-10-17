@@ -21,9 +21,6 @@ public class JTextFieldComponent extends ComponentDecorator{
 	JSpinner columnSpinner; JSpinner widthSpinner; JSpinner heightSpinner;
 	JFrame contextWindow;
 
-	// Set up for internationalization.
-	Locale  currentLocale = Locale.getDefault();
-	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
 	public JTextFieldComponent(BaseComponent newComponent) {
 		super(newComponent);
 		column = 0; width = 0; height = 0;
@@ -55,6 +52,10 @@ public class JTextFieldComponent extends ComponentDecorator{
 	// Provides a window for manipulating JTextField specific attributes
 	@Override
 	public void contextWindow() {
+		// Set up for internationalization.
+		Locale  currentLocale = Locale.getDefault();
+		ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
+		
 		contextWindow = new JFrame();
 		JPanel contextPanel = new JPanel();
 		JPanel spinnerPanel = new JPanel();
