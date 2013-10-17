@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 abstract class ComponentDecorator implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	private BaseComponent baseComponent;
+	protected static final long serialVersionUID = 1L;
+	protected BaseComponent baseComponent;
 	
 	public ComponentDecorator(BaseComponent newComponent){
 		baseComponent = newComponent;
@@ -19,7 +19,15 @@ abstract class ComponentDecorator implements Serializable {
 		return baseComponent.toString();
 	}
 	
-	public void contextWindow(){
+	public String stringDeclare() {
+		return "";
 	}
 	
+	public String stringDefine() {
+		return baseComponent.stringDefine();
+	}
+	
+	public void contextWindow() {
+	
+	}
 }

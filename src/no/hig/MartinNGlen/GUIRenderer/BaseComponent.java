@@ -36,9 +36,20 @@ public class BaseComponent implements Serializable {
 		anchor = component.getAnchor();
 	}
 	
-	public String toString(){
-		
-		return "";
+	/**
+	 * Generates component specific definitions
+	 * @return string that defines the properties of the BaseComponent object
+	 */
+	public String stringDefine() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\t\tgbc.gridx = " +column+ ";\n");
+		sb.append("\t\tgbc.gridx = " +row+ ";\n");
+		sb.append("\t\tgbc.gridweight = " +numOfColumns+ ";\n");
+		sb.append("\t\tgbc.gridheight = " +numOfRows+ ";\n");
+		sb.append("\t\tgbc.anchor = jawa.awt.GridBagConstraints." +anchor+ ";\n");
+		sb.append("\t\tgbc.fill = jawa.awt.GridBagConstraints." +fill+ ";\n");
+		sb.append("\t\tlayout.setConstraints(" +name+ ", gbc);\n");
+		return sb.toString();
 	}
 
 	/**
