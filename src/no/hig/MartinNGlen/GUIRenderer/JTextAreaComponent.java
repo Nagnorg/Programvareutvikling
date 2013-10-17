@@ -42,7 +42,7 @@ public class JTextAreaComponent extends ComponentDecorator{
 	 * @return a string declaring the object, containing row/column data if either one is set
 	 */
 	public String stringDeclare() {
-		if(row != 0 || column != 0) return "\tJTextArea " +baseComponent.getName()+ " = new JTextArea(\"" +baseComponent.getContent()+ "\");";
+		if(row == 0 && column == 0) return "\tJTextArea " +baseComponent.getName()+ " = new JTextArea(\"" +baseComponent.getContent()+ "\");";
 		else return "\tJTextArea " +baseComponent.getName()+ " = new JTextArea(\"" +baseComponent.getContent()+ ", " +row+ ", " +column+ "\");";
 	}
 	
@@ -61,7 +61,7 @@ public class JTextAreaComponent extends ComponentDecorator{
 		}
 		else {
 			sb.append("\t\tJScrollPane " +name+ "ScrollPane = new JScrollPane(" +name+ ");\n");
-			sb.append("\t\t" +name+ "ScrollPane.setPreferredSize(new java.awt.Dimension(" +width+ ", " +height+ "));\n");
+			if(width != 0 || height != 0) sb.append("\t\t" +name+ "ScrollPane.setPreferredSize(new java.awt.Dimension(" +width+ ", " +height+ "));\n");
 			sb.append("\t\tlayout.setConstraints(" +name+ "ScrollPane, gbc);\n");
 			sb.append("\t\tadd(" +name+ ");\n");
 		}
@@ -73,6 +73,7 @@ public class JTextAreaComponent extends ComponentDecorator{
 		return sb.toString();
 	}
 	
+	// Provides a window for manipulating JTextArea specific attributes
 	public void contextWindow(){
 		contextWindow = new JFrame();
 		GridLayout gLayout = new GridLayout(0, 1);

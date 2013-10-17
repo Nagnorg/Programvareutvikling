@@ -52,6 +52,7 @@ public class JTextFieldComponent extends ComponentDecorator{
 		return sb.toString();
 	}
 
+	// Provides a window for manipulating JTextField specific attributes
 	@Override
 	public void contextWindow() {
 		contextWindow = new JFrame();
