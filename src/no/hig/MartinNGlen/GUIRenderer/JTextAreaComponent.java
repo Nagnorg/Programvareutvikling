@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -16,6 +18,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 public class JTextAreaComponent extends ComponentDecorator{
+	private static final long serialVersionUID = 1L;
 	
 	int row; int width; int height; int column; 
 	boolean isScrollPane; boolean isWordWrap;
@@ -25,7 +28,7 @@ public class JTextAreaComponent extends ComponentDecorator{
 	JCheckBox scrollPane; JCheckBox wordWrap; 
 	JFrame contextWindow;
 	
-	// Set up for internationalization.
+	// Setup for internationalization.
 	Locale  currentLocale = Locale.getDefault();
 	ResourceBundle messages = ResourceBundle.getBundle("GUIRenderer", currentLocale);
 	public JTextAreaComponent(BaseComponent newComponent) {
@@ -34,19 +37,25 @@ public class JTextAreaComponent extends ComponentDecorator{
 		isScrollPane = true; isWordWrap = true;
 	}
 
+	/**
+	 * Provides a string that declares a JTextArea object
+	 * @return a string declaring the object, containing row/column data if either one is set
+	 */
 	public String stringDeclare() {
-		if(row == 0 && column == 0) return "\tJTextArea " +baseComponent.getName()+ " = new JTextArea(\"" +baseComponent.getContent()+ "\");";
+		if(row != 0 || column != 0) return "\tJTextArea " +baseComponent.getName()+ " = new JTextArea(\"" +baseComponent.getContent()+ "\");";
 		else return "\tJTextArea " +baseComponent.getName()+ " =new JTextArea(\"" +baseComponent.getContent()+ ", " +row+ ", " +column+ "\");";
 	}
 	
 	/**
-	 * @param sb the object-universal content defined in the baseComponent class
+	 * stringDefine sets JTextArea specific variables, overrides the parent function
+	 * @variable sb the object-universal content defined in the baseComponent class
 	 * @return a string that defines all the content of the object
 	 */
 	public String stringDefine() {
 		String name = baseComponent.getName();
 		StringBuilder sb = new StringBuilder(baseComponent.stringDefine());
-		if(!isScrollPane) {
+		
+		if(!isScrollPane) { // Changes how the component is added depending on whether it has a ScrollPane or not
 			sb.append("\t\tlayout.setConstraints(" +name+ ", gbc);\n");
 			sb.append("\t\tadd(" +name+ ");\n");
 		}
@@ -56,7 +65,8 @@ public class JTextAreaComponent extends ComponentDecorator{
 			sb.append("\t\tlayout.setConstraints(" +name+ "ScrollPane, gbc);\n");
 			sb.append("\t\tadd(" +name+ ");\n");
 		}
-		if(!isWordWrap) {
+		
+		if(!isWordWrap) { // Adds additional information if it has word-wrap
 			sb.append("\t\t" +name+ ".setLineWrap(true);\n");
 			sb.append("\t\t" +name+ ".setWrapStyleWord(true);\n");
 		}

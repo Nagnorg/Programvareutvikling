@@ -13,16 +13,15 @@ abstract class ComponentDecorator implements Serializable {
 	
 	public BaseComponent getBaseComponent() {
 		  return baseComponent;
-		}
-	
-	public String toString(){
-		return baseComponent.toString();
 	}
 	
-	public String stringDeclare() {
-		return "";
-	}
+	// A string containing the declaration of an object. Function is overwritten by child classes.
+	abstract String stringDeclare();
 	
+	/**
+	 * Provides a default way for child classes to provide a string that defines the content of their attributes
+	 * @return a string that defines and adds a standard object to the JPanel
+	 */
 	public String stringDefine() {
 		String name = baseComponent.getName();
 		StringBuilder sb = new StringBuilder(baseComponent.stringDefine());
@@ -31,7 +30,5 @@ abstract class ComponentDecorator implements Serializable {
 		return sb.toString();
 	}
 	
-	public void contextWindow() {
-	
-	}
+	abstract void contextWindow();
 }

@@ -8,7 +8,6 @@ import java.util.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.table.*;
 
 public class ComponentModel extends AbstractTableModel{
@@ -163,9 +162,9 @@ public class ComponentModel extends AbstractTableModel{
 	
 	/**
 	 * Handles the writing of the serialized data to the specified file
-	 * @param oos output stream of the designated file
-	 * @param componentData ComponentDecorator vector with the runtime objects
-	 * @param ioe Exception thrown from input/output errors
+	 * @variable oos output stream of the designated file
+	 * @variable componentData ComponentDecorator vector with the runtime objects
+	 * @variable ioe Exception thrown from input/output errors
 	 */
 	
 	public void save (ObjectOutputStream oos) {
@@ -173,17 +172,17 @@ public class ComponentModel extends AbstractTableModel{
 			for (int i = 0; i < componentData.size(); i++)
 				oos.writeObject(componentData.get(i));
 		} catch (IOException ioe) {
-			System.err.println ("Feil under skriving til fil");
+			System.err.println (messages.getString("ErrorMessage.IOException"));
 		}
 	}
 	
 	/**
 	 * Clears all the ComponentDecorator objects and loads new ones from a file
-	 * @param ois input stream of the designated file
-	 * @param componentData ComponentDecorator vector with the runtime objects
-	 * @param cce Exception thrown from trying to cast an object to an unsuitable class
-	 * @param cnfe Exception thrown from trying to load an undefined class
-	 * @param ioe Exception thrown from input/output errors
+	 * @variable ois input stream of the designated file
+	 * @variable componentData ComponentDecorator vector with the runtime objects
+	 * @variable cce Exception thrown from trying to cast an object to an unsuitable class
+	 * @variable cnfe Exception thrown from trying to load an undefined class
+	 * @variable ioe Exception thrown from input/output errors
 	 */
 	public void load (ObjectInputStream ois) {
 		componentData.clear();
@@ -195,11 +194,11 @@ public class ComponentModel extends AbstractTableModel{
 		} catch (EOFException eofe) {
 			// Slutt på fila
 		} catch (ClassCastException cce) {
-			System.err.println ("Beklager, men filen inneholder objeckter som ikke er egnet til dette programmet");
+			System.err.println (messages.getString("ErrorMessage.ClassCastException"));
 		} catch (ClassNotFoundException cnfe) {
-			System.err.println ("Beklager, men filen inneholder objekter som ikke er egnet til dette programmet");
+			System.err.println (messages.getString("ErrorMessage.ClassNotFoundException"));
 		} catch (IOException ioe) {
-			System.err.println ("Feil under lesing fra fil");
+			System.err.println (messages.getString("ErrorMessage.IOException"));
 		} finally {
 			fireTableDataChanged();
 		}

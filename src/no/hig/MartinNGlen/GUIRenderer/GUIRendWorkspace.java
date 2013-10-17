@@ -275,7 +275,7 @@ public class GUIRendWorkspace extends JFrame {
 				workspaceModel.save(oos);
 				oos.close();	
 			} catch(IOException ioe) {
-				System.err.println("Feil på filhåndteringen.");
+				System.err.println(messages.getString("ErrorMessage.IOException"));
 			}
 			
 		}
@@ -300,7 +300,7 @@ public class GUIRendWorkspace extends JFrame {
 				workspaceModel.load (ois);
 				ois.close ();	
 			} catch (IOException ioe) {
-				System.err.println ("Feil på filhåndteringen.");
+				System.err.println(messages.getString("ErrorMessage.IOException"));
 			}
 		}
 	}
@@ -364,7 +364,7 @@ public class GUIRendWorkspace extends JFrame {
 				bw.close();
 				
 			} catch (IOException ioe) {
-				System.err.println ("Feil under skriving av rapporten.");
+				System.err.println (messages.getString("ErrorMessage.IOException"));
 			}
 		}
 	}
@@ -390,7 +390,7 @@ public class GUIRendWorkspace extends JFrame {
 	    }
 
 	    private void showPopup(MouseEvent e) {
-	        if (e.isPopupTrigger()&&workspaceTable.getSelectedRow()!= -1) {
+	        if (e.isPopupTrigger() && workspaceTable.getSelectedRow() != -1) {
 	            tablePopup.show(e.getComponent(),
 	                       e.getX(), e.getY());
 	        }

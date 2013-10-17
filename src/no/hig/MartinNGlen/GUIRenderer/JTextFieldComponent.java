@@ -1,10 +1,11 @@
 package no.hig.MartinNGlen.GUIRenderer;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 public class JTextFieldComponent extends ComponentDecorator{
+	private static final long serialVersionUID = 1L;
 	
 	int column; int width; int height;
 	
@@ -27,11 +29,20 @@ public class JTextFieldComponent extends ComponentDecorator{
 		column = 0; width = 0; height = 0;
 	}
 	
+	/**
+	 * Provides a string that declares a JTextField object
+	 * @return a string declaring the object, containing column data if set
+	 */
 	public String stringDeclare() {
 		if(column == 0) return "\tJTextField " +baseComponent.getName()+ " = new JTextField(\"" +baseComponent.getContent()+ "\");";
 		else return "\tJTextField " +baseComponent.getName()+ " = new JTextField(\"" +baseComponent.getContent()+ ", " +column+ "\");";
 	}
 	
+	/**
+	 * stringDefine sets JTextField specific variables, overrides the parent function
+	 * @variable sb the object-universal content defined in the baseComponent class
+	 * @return a string that defines all the content of the object
+	 */
 	public String stringDefine() {
 		String name = baseComponent.getName();
 		StringBuilder sb = new StringBuilder(baseComponent.stringDefine());
@@ -44,7 +55,6 @@ public class JTextFieldComponent extends ComponentDecorator{
 	@Override
 	public void contextWindow() {
 		contextWindow = new JFrame();
-		GridLayout gLayout = new GridLayout(0, 1);
 		JPanel contextPanel = new JPanel();
 		JPanel spinnerPanel = new JPanel();
 		
