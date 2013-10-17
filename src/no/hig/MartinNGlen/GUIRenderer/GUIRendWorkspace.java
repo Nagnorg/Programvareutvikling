@@ -76,7 +76,6 @@ public class GUIRendWorkspace extends JFrame {
 		workspaceTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(componentTypeEditor));
 		workspaceTable.getColumnModel().getColumn(7).setCellEditor(new DefaultCellEditor(componentFillEditor));
 		workspaceTable.getColumnModel().getColumn(8).setCellEditor(new DefaultCellEditor(componentAnchorEditor));
-		workspaceModel.addNewComponentEntry();
 		
 		//popup menu creation
 		JMenuItem specialPropertiesItem = new JMenuItem(messages.getString("GUIRendWorkspace.popupProperties"));
@@ -132,9 +131,11 @@ public class GUIRendWorkspace extends JFrame {
 		
 		fileMenu.add(newlineItem);
 		fileMenu.add(deletelineItem);
+		fileMenu.addSeparator();
 		fileMenu.add(saveItem);
 		fileMenu.add(loadItem);
 		fileMenu.add(sourceItem);
+		fileMenu.addSeparator();
 		fileMenu.add(aboutItem);
 		
 		JMenu windowMenu = new JMenu(messages.getString("GUIRendWorkspace.window"));
@@ -167,20 +168,30 @@ public class GUIRendWorkspace extends JFrame {
 		JButton newlineButton = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/newlineIcon.png")));
 		newlineButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarNewline"));
 		
+		JButton deletelineButton = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/removelineIcon.png")));
+		deletelineButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarDeleteline"));
+		
 		JButton saveButton = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/saveIcon.png")));
 		saveButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarSave"));
 		
 		JButton loadButton  = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/loadIcon.png")));
 		loadButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarLoad"));
 		
+		JButton generateButton = new JButton(new ImageIcon(getClass().getResource("/images/toolbar/generateIcon.png")));
+		generateButton.setToolTipText(messages.getString("GUIRendWorkspace.toolbarGenerate"));
+		
 		newlineButton.addActionListener(new newComponent());
+		deletelineButton.addActionListener(new deleteComponent());
 		saveButton.addActionListener(new saveState());
 		loadButton.addActionListener(new loadState());
+		generateButton.addActionListener(new generateCode());
 		
 		JToolBar toolBar = new JToolBar();
 		toolBar.add(newlineButton);
+		toolBar.add(deletelineButton);
 		toolBar.add(saveButton);
 		toolBar.add(loadButton);
+		toolBar.add(generateButton);
 		
 		return toolBar;
 	}
